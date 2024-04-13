@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // import React from 'react'
 import { assets } from '../../assets/assets'
 import { useInputContext } from '../../context/context'
@@ -73,9 +74,9 @@ function Main() {
                     <div>
                         <img src={assets.gallery_icon} alt="" />
                         <img src={assets.mic_icon} alt="" />
-                        <img src={assets.send_icon} alt="" onClick={() => {
+                        {prompt ? <img src={assets.send_icon} alt="" onClick={() => {
                             onSent()
-                        }} />
+                        }} /> : null}
                     </div>
                 </div>
                 <p className="bottom-info">

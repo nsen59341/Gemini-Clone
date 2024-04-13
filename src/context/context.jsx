@@ -3,6 +3,7 @@ import runChat from "../config/gemini";
 
 export const Context = createContext();
 
+// eslint-disable-next-line react/prop-types
 const ContextProvider = ({children}) => {
 
     // onSent("what is react js") 
@@ -15,17 +16,39 @@ const ContextProvider = ({children}) => {
     const [result, setResult] = useState('')
 
     const delayPara = (idx, nextWord) => {
-
+        setTimeout(() => {
+            setResult(prev => prev+nextWord);
+        }, 75*idx);
     }
 
+    const newChatDisplay = () => {
+        console.log('newChatDisplay')
+        setShowResults(false)
+        setLoading(false)
+    }
+
+    // eslint-disable-next-line no-unused-vars
     const onSent = async(promptInput) => {
         setResult("");
         setLoading(true);
         setShowResults(true);
-        setRecentPrompt(prompt);
-        const response = await runChat(prompt);
+        let response;
+        if(promptInput!=undefined)
+        {
+            response = await runChat(promptInput)
+            setRecentPrompt(promptInput)
+
+        }
+        else{
+            setRecentPrompt(prompt);
+            setPrevPrompts(prev => [...prev, prompt])
+            response = await runChat(prompt)
+        }
+        // setRecentPrompt(prompt);
+        // setPrevPrompts(prev => [...prev, prompt])
+      
         let respArr = response.split("**")
-        let newResponse;
+        let newResponse = "";
 
         for(let i=0; i<respArr.length; i++){
             if(i===0 || i%2!==1){
@@ -38,7 +61,12 @@ const ContextProvider = ({children}) => {
 
         let newResponse2 = newResponse.split("*").join("</br>")
 
-        setResult(newResponse2)
+        let newResponseArr = newResponse2.split(' ');
+
+        for (let i=0; i<newResponseArr.length; i++) {
+            delayPara(i, newResponseArr[i]+' ')
+        }
+        
         setLoading(false)
         setPrompt("")
     }
@@ -50,7 +78,8 @@ const ContextProvider = ({children}) => {
         showResults,
         onSent,
         loading,
-        result
+        result,
+        newChatDisplay
     }
 
     return  (
@@ -62,6 +91,7 @@ const ContextProvider = ({children}) => {
 
 export default ContextProvider
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useInputContext = () => {
     return useContext(Context);
 }
