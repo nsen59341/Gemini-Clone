@@ -18,6 +18,11 @@ function Main() {
     result,
     givenName,
     userimg} = useInputContext();
+
+    const showRecentPrompt = async(prompt) => {
+        await setRecentPrompt(prompt)
+        await onSent(prompt)
+      }
     
   return (
     <div className='main'>
@@ -47,19 +52,23 @@ function Main() {
                 <p>How can I help you today?</p>
             </div>
             <div className="cards">
-                <div className="card">
+                <div className="card" onClick={()=>
+                    showRecentPrompt('Suggest some beautiful places to visit')}>
                     <p>Suggest some beautiful places to visit.</p>
                     <img src={assets.compass_icon} alt="" />
                 </div>
-                <div className="card">
+                <div className="card" onClick={()=>
+                    showRecentPrompt('Briefly summarize this concept: urban planning')}>
                     <p>Briefly summarize this concept: urban planning</p>
                     <img src={assets.bulb_icon} alt="" />
                 </div>
-                <div className="card">
+                <div className="card" onClick={()=>
+                    showRecentPrompt('Brainstorm team bonding activity for our work retreats')}>
                     <p>Brainstorm team bonding activity for our work retreats</p>
                     <img src={assets.message_icon} alt="" />
                 </div>
-                <div className="card">
+                <div className="card" onClick={()=>
+                    showRecentPrompt('Improve the readibility of the following code')}>
                     <p>Improve the readibility of the following code</p>
                     <img src={assets.code_icon} alt="" />
                 </div>

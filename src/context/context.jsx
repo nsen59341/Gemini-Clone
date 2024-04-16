@@ -30,6 +30,7 @@ const ContextProvider = ({children}) => {
 
     // eslint-disable-next-line no-unused-vars
     const onSent = async(promptInput) => {
+        
         setResult("");
         setLoading(true);
         setShowResults(true);
