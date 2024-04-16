@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import runChat from "../config/gemini";
+import Cookies from "js-cookie";
 
 export const Context = createContext();
 
@@ -70,6 +71,10 @@ const ContextProvider = ({children}) => {
         setLoading(false)
         setPrompt("")
     }
+    
+    let givenName = Cookies.get('given_name');
+    let userimg = Cookies.get('userimg');
+    console.log('userimg',userimg);
 
     const contextVal = {
         prompt, setPrompt, 
@@ -79,7 +84,9 @@ const ContextProvider = ({children}) => {
         onSent,
         loading,
         result,
-        newChatDisplay
+        newChatDisplay,
+        givenName,
+        userimg
     }
 
     return  (

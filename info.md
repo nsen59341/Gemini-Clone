@@ -1,1 +1,2 @@
 Google AI studio : AIzaSyDSLCtMn5HIB7MZ4gkHhduKOXu6hgOozdk
+Google client id: 1028718661196-bmd820m5uhb34spq1mq6btqhuodaquhj.apps.googleusercontent.com

@@ -3,6 +3,10 @@
 import { assets } from '../../assets/assets'
 import { useInputContext } from '../../context/context'
 import './main.css'
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
+
 
 function Main() {
   const {prompt, setPrompt, 
@@ -11,19 +15,35 @@ function Main() {
     showResults,
     onSent,
     loading,
-    result} = useInputContext();
+    result,
+    givenName,
+    userimg} = useInputContext();
     
   return (
     <div className='main'>
         <div className="nav">
             <p>Gemini</p>
-            <img src={assets.user_icon} alt="" />
+            {userimg ? 
+            <img src={userimg} alt="" /> :
+            <GoogleLogin
+                onSuccess={credentialResponse => {
+                let credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+                console.log(credentialResponseDecoded);
+                Cookies.set('given_name', credentialResponseDecoded.given_name, { expires: 1 });
+                Cookies.set('userimg', credentialResponseDecoded.picture, { expires: 1 });
+                }}
+                onError={() => {
+                console.log('Login Failed');
+                }}
+            />}
         </div>
         <div className="main-container">
             {!showResults ? 
             <>
             <div className="greet">
-                <p><span>Hello, Dev.</span></p>
+                <p><span>Hello,
+                    { givenName ? givenName : 'Guest' }
+                </span></p>
                 <p>How can I help you today?</p>
             </div>
             <div className="cards">
@@ -48,7 +68,7 @@ function Main() {
             :
             <div className="result">
                 <div className="result-title">
-                    <img src={assets.user_icon} alt="" />
+                    <img src={userimg} alt="" />
                     <p>{recentPrompt}</p>
                 </div>
                 <div className="result-data">
